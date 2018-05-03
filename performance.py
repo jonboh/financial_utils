@@ -18,7 +18,7 @@ def tick2ret_ann(tick_table):
 
 
 def maxdrawdown(tick_table):
-    ticks = tick_table.Tick
+    ticks = tick_table.Tick.as_matrix()
     unscaled = np.log(ticks)
     i = np.argmax(np.maximum.accumulate(unscaled) - unscaled)  # end of the period
     j = np.argmax(unscaled[:i])  # start of period
