@@ -16,7 +16,7 @@ def tick2ret_ann(tick_table, base=365):
     returns_ann = (returns + 1) ** (base * datediff) - 1
     return returns_ann
 
-
+			
 def maxdrawdown(tick_table):
     ticks = tick_table.Tick.as_matrix()
     unscaled = np.log(ticks)
@@ -45,6 +45,6 @@ def sharpeR(tick_table, r=0, base=365):
     ret = tick2ret(tick_table)
     datediff = tick_table.Date.diff().apply(lambda x: x.total_seconds() / 60 / 60 / 24).as_matrix()[1:]
     datediff = datediff.reshape(ret.shape)
-    r_adj = (r + 1) ** (1 / base / datediff) - 1
+    r_adj = (r + 1) ** (1 / (base / datediff)) - 1
     sharpe = np.mean(ret - r_adj) / np.std(ret - r_adj) * np.sqrt(base)
     return sharpe
