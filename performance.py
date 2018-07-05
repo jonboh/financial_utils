@@ -9,11 +9,11 @@ def tick2ret(tick_table):
     return returns
 
 
-def tick2ret_ann(tick_table):
+def tick2ret_ann(tick_table, base=365):
     returns = tick2ret(tick_table)
     datediff = tick_table.Date.diff().apply(lambda x: x.total_seconds() / 60 / 60 / 24).as_matrix()[1:]
     datediff = datediff.reshape(returns.shape)
-    returns_ann = (returns + 1) ** (365 * datediff) - 1
+    returns_ann = (returns + 1) ** (base * datediff) - 1
     return returns_ann
 
 
@@ -26,11 +26,11 @@ def maxdrawdown(tick_table):
     return maxdrawdown
 
 
-def annual_return(tick_table):
+def annual_return(tick_table, base=365):
     dates = tick_table.Date
     returns = tick2ret(tick_table)
     totalreturns = np.prod(returns + 1)
-    ann_ret = totalreturns ** (1 / (dates[len(dates) - 1] - dates[0]).total_seconds() * 60 * 60 * 24 * 365) - 1
+    ann_ret = totalreturns ** (1 / (dates[len(dates) - 1] - dates[0]).total_seconds() * 60 * 60 * 24 * base) - 1
     return ann_ret
 
 
