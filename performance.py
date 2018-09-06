@@ -8,6 +8,17 @@ def tick2ret(tick_table):
         returns[i] = ticks[i + 1] / ticks[i] - 1
     return returns
 
+def tick2ret_pivoted(tick_table):
+	ticks = tick_table.Tick
+	other_ticks = tick_table.drop(["Tick","Date"], axis=1)
+	returns = np.nan * np.ones((len(ticks) - 1, 1))
+	other_returns = np.nan * np.ones((len(ticks) - 1, other_ticks.shape[1]))
+	for i in range(0, len(ticks)-1):
+		returns[i] = ticks[i + 1] / ticks[i] - 1
+		for j in range(0, other_ticks.shape[1]):
+			other_returns[i,j] = other_ticks.iloc[i+1][j] / ticks[i] -1		
+	return returns, other_returns
+
 
 def tick2ret_ann(tick_table, base=365):
     returns = tick2ret(tick_table)
