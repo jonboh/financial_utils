@@ -31,9 +31,12 @@ def tick2ret_ann(tick_table, base=365):
 def maxdrawdown(tick_table):
     ticks = tick_table.Tick.as_matrix()
     unscaled = np.log(ticks)
-    i = np.argmax(np.maximum.accumulate(unscaled) - unscaled)  # end of the period
-    j = np.argmax(unscaled[:i])  # start of period
-    maxdrawdown = ticks[i] / ticks[j] - 1
+    try:
+        i = np.argmax(np.maximum.accumulate(unscaled) - unscaled)  # end of the period
+        j = np.argmax(unscaled[:i])  # start of period
+        maxdrawdown = ticks[i] / ticks[j] - 1
+    except ValueError: # No drawdown found
+        maxdrawdown = 0.0
     return maxdrawdown
 
 
